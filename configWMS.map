@@ -1,0 +1,242 @@
+MAP
+    NAME "Bodity"
+    IMAGECOLOR 255 255 255
+    SIZE 600 800
+    IMAGETYPE PNG24
+    PROJECTION
+        "init=epsg:4326" #latlon on WGS84
+    END #default projection
+    EXTENT 36.82 6.3 39.85 7.9 # lon/lat extents of Boditi
+    WEB
+        METADATA
+            "wms_title" "PhotogrammetryWMS"
+            "wms_srs" "EPSG:4326 EPSG:3857" #latlon
+            "wms_enable_request" "*"
+            "ows_enable_request" "*"
+            "map" "d:/iishome/student/s2578956/Photogrammetry-Website/configWMS.map"
+            "ows_schemas_location" "http://schemas.opengeospatial.net"
+            "ows_title" "PhotogrammetryWMS"
+            "ows_onlineresource" "https://gisedu.itc.utwente.nl/cgi-bin/mapserv.exe?map=d:/iishome/student/s2578956/Photogrammetry-Website/configWMS.map&"
+            "wms_onlineresource" "https://gisedu.itc.utwente.nl/cgi-bin/mapserv.exe?map=d:/iishome/student/s2578956/Photogrammetry-Website/configWMS.map&"
+            "ows_srs" "EPSG:4326 EPSG:3857" #latlon
+            "wms_feature_info_mime_type" "text/plain"
+            "wms_feature_info_mime_type" "text/html"
+            "wms_server_version" "1.3.0"
+            "wms_formatlist" "image/png,image/gif,image/jpeg"
+            "wms_format" "image/png"
+        END #web metadata
+    END #web
+
+    
+    LAYER
+      NAME dsm
+      STATUS ON
+      TYPE RASTER
+      TEMPLATE "empty"
+      # DATA is now just a simple path to the file:
+      DATA "data/bodity_reprojected_dsm.tif"
+      CLASSITEM "[pixel]"
+      METADATA
+          "wms_title" "dsm"
+          "wms_include_items" "value_0"
+      END
+      PROJECTION
+       "init=epsg:4326"
+      END
+      CLASS
+        NAME "Elevation: 1843 - 1916m"
+            EXPRESSION ([pixel] >= 1843 AND [pixel] <= 1916)
+
+            STYLE
+          
+              COLORRANGE 16 93 39 153 199 97  
+              DATARANGE 1843 1916       
+              RANGEITEM "pixel"
+         
+          END #STYLE
+        END #class
+        CLASS
+          NAME "Elevation: 1917 - 1989m"
+              EXPRESSION ([pixel] > 1916 AND [pixel] <= 1989)
+  
+              STYLE
+            
+                COLORRANGE 153 199 97 241 241 182          
+                DATARANGE 1917 1989       
+                RANGEITEM "pixel"
+           
+            END #STYLE
+          END #class
+          CLASS
+            NAME "Elevation: 1990 - 2062m"
+                EXPRESSION ([pixel] > 1989 AND [pixel] <= 2062)
+    
+                STYLE
+              
+                  COLORRANGE 241 241 182 230 164 102          
+                  DATARANGE 1990 2062       
+                  RANGEITEM "pixel"
+             
+              END #STYLE
+            END #class
+            CLASS
+              NAME "Elevation: 2063 - 2135m"
+                  EXPRESSION ([pixel] > 2062 AND [pixel] <= 2140)
+      
+                  STYLE
+                
+                    COLORRANGE 230 164 102 112 12 14
+                    DATARANGE 2063 2135       
+                    RANGEITEM "pixel"
+               
+                END #STYLE
+              END #class 
+          PROCESSING "ITEMS=value_0"
+   
+  END # layer dsm
+
+  LAYER
+    NAME dtm
+    STATUS ON
+    TYPE RASTER
+    TEMPLATE "empty"
+    # DATA is now just a simple path to the file:
+    DATA "data/bodity_reprojected.tif"
+    CLASSITEM "[pixel]"
+    METADATA
+        "wms_title" "dtm"
+        "wms_include_items" "value_0"
+    END
+    PROJECTION
+     "init=epsg:4326"
+    END
+    CLASS
+      NAME "Elevation: 1840 - 1912m"
+          EXPRESSION ([pixel] >= 1840 AND [pixel] <= 1912)
+
+          STYLE
+        
+            COLORRANGE 16 93 39 153 199 97  
+            DATARANGE 1840 1912       
+            RANGEITEM "pixel"
+       
+        END #STYLE
+      END #class
+      CLASS
+        NAME "Elevation: 1913 - 1983m"
+            EXPRESSION ([pixel] > 1912 AND [pixel] <= 1983)
+
+            STYLE
+          
+              COLORRANGE 153 199 97 241 241 182          
+              DATARANGE 1913 1983       
+              RANGEITEM "pixel"
+         
+          END #STYLE
+        END #class
+        CLASS
+          NAME "Elevation: 1984 - 2056m"
+              EXPRESSION ([pixel] > 1983 AND [pixel] <= 2056)
+  
+              STYLE
+            
+                COLORRANGE 241 241 182 230 164 102          
+                DATARANGE 1984 2056       
+                RANGEITEM "pixel"
+           
+            END #STYLE
+          END #class
+          CLASS
+            NAME "Elevation: 2056 - 2126m"
+                EXPRESSION ([pixel] > 2056 AND [pixel] <= 2130)
+    
+                STYLE
+              
+                  COLORRANGE 230 164 102 112 12 14
+                  DATARANGE 2057 2126       
+                  RANGEITEM "pixel"
+             
+              END #STYLE
+            END #class
+          PROCESSING "ITEMS=value_0" 
+ 
+END # layer dtm
+
+
+
+LAYER
+  NAME "contour_dsm"
+  # EXPRESSION {contour_dsm_15m}
+  TYPE LINE
+  STATUS ON
+  TOLERANCE 5
+  TOLERANCEUNITS pixels
+  METADATA
+    "wms_title" "contour_dsm"
+    "wms_include_items" "all"
+  END
+  PROJECTION
+    "init=epsg:4326"
+  END
+  DATA "data/contour_dsm_15m.shp"
+  LABELITEM "elevation"
+  CLASS
+    NAME "DSM Contour 15m"
+    TEMPLATE "empty"
+    STYLE
+      # WIDTH 0.5
+      COLOR 136 14 79
+    END #style 
+    LABEL
+      COLOR 0 0 0
+      BUFFER 25
+      OUTLINECOLOR 255 255 255 
+      # FONT vera-bold
+      SIZE 11.5
+      ANGLE FOLLOW
+      POSITION AUTO
+      PARTIALS TRUE
+    END #label 
+
+  END #class 
+  PROCESSING "ITEMS=elevation"
+END #layer
+
+LAYER
+  NAME "contour_dtm"
+  TYPE LINE
+  STATUS ON
+  TOLERANCE 5
+  TOLERANCEUNITS pixels
+  METADATA
+    "wms_title" "contour_dtm"
+    "wms_include_items" "all"
+  END
+  PROJECTION
+    "init=epsg:4326"
+  END
+  DATA "data/contours_15m.shp"
+  LABELITEM "elevation"
+  CLASS
+    NAME "DTM Contour 15m"
+    TEMPLATE "empty"
+    STYLE
+      # WIDTH 0.5
+      COLOR 0 0 0
+    END #style 
+    LABEL
+      COLOR 0 0 0
+      BUFFER 25
+      OUTLINECOLOR 255 255 255 
+      # FONT vera-bold
+      SIZE 11.5
+      ANGLE FOLLOW
+      POSITION AUTO
+      PARTIALS TRUE
+    END #label 
+
+  END #class 
+  PROCESSING "ITEMS=elevation"
+END #layer
+
+END #map

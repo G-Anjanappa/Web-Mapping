@@ -128,8 +128,8 @@ function init() {
   });
 
   navMap.addLayer(baseLayers);
-  navMap.addLayer(DTMLayers);
   navMap.addLayer(DSMLayers);
+  navMap.addLayer(DTMLayers);
 
 
 
